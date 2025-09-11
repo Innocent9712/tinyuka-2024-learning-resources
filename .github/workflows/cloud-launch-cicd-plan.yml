@@ -2,10 +2,10 @@ name: "Cloud Launch CI/CD Terraform Plan"
 
 on:
   push:
-    branches:
-      - "feature/**"
-    paths:
-      - "cicd-hands-on/cloud-launch-project/**"
+    # branches:
+    #   - "feature/**"
+    # paths:
+    #   - "cicd-hands-on/cloud-launch-project/**"
 
 permissions:
   contents: read
