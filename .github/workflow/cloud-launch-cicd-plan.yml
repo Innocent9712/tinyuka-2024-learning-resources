@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - "feature/**"
-    paths:
-      - "cicd-hands-on/cloud-launch-project/**"
+    # paths:
+    #   - "cicd-hands-on/cloud-launch-project/**"
 
 permissions:
   contents: read
