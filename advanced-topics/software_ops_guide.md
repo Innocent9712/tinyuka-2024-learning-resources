@@ -47,7 +47,12 @@ Logs are immutable, timestamped records of discrete events that happened over ti
 #### c) Traces (Distributed Tracing)
 A trace tracks the journey of a single request as it moves through a distributed system. This is crucial in microservice architectures built on services like API Gateway, Lambda, ECS, and SQS.
 
-**Analogy**: Following a message through an SQS queue to a Lambda function, which then calls a DynamoDB table and another API. A trace connects all these steps into a single view.
+![Xray Trace Map](./images/xray-tracemap.png "A map of communication between application services and aws resources in Xray Trace Map.")
+**Analogy**: AWS X-Ray. It visualizes the path of a request through various AWS services, showing latencies and errors.
+
+
+![Grafana Trace](./images/trace-waterfall.png "A trace view in Grafana showing the breakdown of time spent in each service.")
+**Analogy**: A waterfall view in a tracing tool like Grafana Tempo, showing the breakdown of time spent in each service.
 
 ### Common Tools and Services
 
@@ -69,13 +74,22 @@ Release Management is the process of planning, scheduling, and controlling the d
 
 **AWS Implementation**: You can implement this using AWS Elastic Beanstalk which has a built-in "swap environment URLs" feature. Manually, you can use Amazon Route 53 to switch DNS records between two environments, or use an Application Load Balancer (ALB) to switch traffic between two different Target Groups. AWS CodeDeploy also has native support for Blue-Green deployments.
 
+![Blue-Green Deployment](./images/blue-green-deployment.webp "A diagram showing blue-green deployment with two identical environments and a load balancer switching traffic between them.")
+**Analogy**: Think of it like having two identical production environments (Blue and Green). You deploy the new version to the Green environment while Blue serves all the traffic. Once you're confident in Green, you switch all traffic to it, making it the new production environment. If something goes wrong, you can quickly revert back to Blue. This minimizes downtime and risk during deployments.
+
 #### b) Canary Release
 
 **AWS Implementation**: You can use a weighted routing policy in Amazon Route 53 to send a small percentage of traffic to the new version. More advanced canary releases can be managed using an Application Load Balancer with two target groups and adjusting the weight of traffic. AWS CodeDeploy can automate the process of shifting traffic gradually, and API Gateway has a built-in canary feature for new API versions.
 
+![Canary Release](./images/canary-release-posthog.png "A diagram showing canary release with a small percentage of traffic going to the new version and the rest to the old version.")
+**Analogy**: Imagine releasing a new feature to just 10% of your users initially. If everything looks good, you gradually increase that percentage until 100% of users are on the new version. If issues arise, you can halt the rollout and revert to the previous version with minimal impact.
+
 #### c) Feature Flags (or Toggles)
 
 **AWS Implementation**: You can use AWS AppConfig to host feature flag configurations and deploy them to your applications safely. Amazon CloudWatch Evidently is another service designed for feature experimentation and safe rollouts.
+
+![Feature Flags](./images/feature-flags.png "A diagram showing feature flags with different features enabled or disabled based on user groups.")
+**Analogy**: Feature flags allow you to turn features on or off without deploying new code. For example, you might have a new search feature that you want to test with a subset of users. By using a feature flag, you can enable it for just those users while keeping it disabled for everyone else. This allows for safer experimentation and gradual rollouts.
 
 ### Common Tools and Services for Automation
 
